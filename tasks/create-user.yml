@@ -1,0 +1,48 @@
+---
+  # Title: ansible-role-ansible-server 
+  #
+  # Author: Luc Rutten
+  # File: tasks/create-user.yml
+  #
+  # Description:
+  #   Ansible default deployment server
+
+  - name: "set facts for generic username module"
+    set_fact:
+      svc_user: "{{ ans_user_name }}"
+      svc_pass: "{{ ans_user_pass }}"
+
+  - name: "Install dependencies"
+    apt:
+      name: "{{ packages }}"
+      state: present
+    vars:
+      packages:
+      - whois
+  
+  - name: "Create Ansible group"
+    group:
+      name: ansible
+      state: present
+  
+  - name: "Generate password for Ansible user {{ svc_user }}"
+    command: "mkpasswd --method=sha-512 {{ svc_pass }}"
+    register: encrypted_password
+    
+  - name: "Create default user for managing Ansible"
+    user:
+      name: "{{ svc_user }}"
+      password: "{{ encrypted_password.stdout }}"
+      shell: /bin/bash
+      group: ansible
+      groups: sudo
+      append: yes
+  
+  - name: "Transter template for Ansible user {{ svc_user }}"
+    template:
+      src: sudo-user.j2
+      dest: /etc/sudoers.d/{{ svc_user }}
+      owner: root
+      group: root
+      mode: 0440
+

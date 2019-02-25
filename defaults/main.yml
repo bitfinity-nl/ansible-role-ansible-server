@@ -1,0 +1,53 @@
+---
+  # Title: ansible-role-ansible-server 
+  #
+  # Author: Luc Rutten
+  # File: defaults/main.yml
+  #
+  # Description:
+  #   Ansible default deployment server
+
+  # -- Ansible --
+  #
+  # Variable(s):
+  #   ans_user_name : 'ansible'       # Ansible username default=ansible.
+  #   ans_user_pass : 'Password123!'  # Change password
+  #
+  ans_user_name     : 'ansible'
+  ans_user_pass     : 'Password123!'
+  
+
+
+  # -- Apache2: security.conf.j2 --
+  #
+  # See for full details look at: templates/apache2/security.conf
+  #
+  # Variable(s):
+  #   ap_ServerTokens    : 'OS'   # Set to one of:  Full | OS | Minimal | Minor | Major | Prod
+  #   ap_ServerSignature : 'On'   # Set to one of:  On | Off | EMail
+  #   ap_TraceEnable     : 'Off'  # Set to one of:  On | Off | extended
+  #
+  ap_ServerTokens    : 'Prod'
+  ap_ServerSignature : 'off'
+  ap_TraceEnable     : 'off'
+
+  # -- WinRM settings --
+  #
+  # Variable(s):
+  #   ap_win_user                         : 'svc_ansible'   # Windows local/AD service account wih adminstrative rights.
+  #   ap_win_pass                         : 'Password123'   # Windows local/AD service accoutn password.
+  #   ap_win_winrm_realm                  : 'test.local'    # Windows workgroup/realm.
+  #   ap_win_port                         : '5985'          # Listning port.
+  #   ap_win_connection                   : 'winrm'         # Connection type.
+  #   ap_win_winrm_server_cert_validation : 'ignore'        # Whether to validate the server certificate or not.
+  #   ap_win_winrm_scheme                 : 'http'          # WinRM scheme 'http' or 'https'.
+  #   ap_win_winrm_transport              : 'ntlm'          # Authentication type.
+  #
+  ap_win_user                         : 'svc_ansible'
+  ap_win_pass                         : 'Password123'
+  ap_win_winrm_realm                  : 'LAB.LOCAL'
+  ap_win_port                         : '5985'
+  ap_win_connection                   : 'winrm'
+  ap_win_winrm_server_cert_validation : 'ignore'
+  ap_win_winrm_scheme                 : 'http'
+  ap_win_winrm_transport              : 'ntlm'

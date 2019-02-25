@@ -1,0 +1,13 @@
+ it is suggested that these be encrypted with ansible-vault:
+# ansible-vault edit group_vars/windows.yml
+
+ansible_user: {{ ap_win_user }}
+ansible_password: {{ ap_win_pass }}
+ansible_winrm_realm: {{ ap_win_winrm_realm }}
+ansible_port: {{ ap_win_port }}
+ansible_connection: {{ ap_win_connection }}
+# The following is necessary for Python 2.7.9+ (or any older Python that has ba$
+ansible_winrm_server_cert_validation: {{ ap_win_winrm_server_cert_validation }}
+
+ansible_winrm_scheme: {{ ap_win_winrm_scheme }}
+ansible_winrm_transport: {{ ap_win_winrm_transport }}

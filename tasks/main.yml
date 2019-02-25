@@ -1,0 +1,29 @@
+---
+  # Title: role-kvm-hypervisor
+  #
+  # Author: bitfinity.nl
+  # File: tasks/main.yml
+  #
+  # Description:
+  #   Ansible Deployment server
+  #
+  #   - Apache2 - resource server for storing files
+  #   - Ansible user
+
+  - name: "Type:create user, For OS: Ubuntu 18.04LTS, Arch: amd64, State: Enabled"
+    import_tasks: create-user.yml
+    when:
+      - ansible_distribution_version == '18.04'
+      - ansible_architecture == 'x86_64'
+  
+  - name: "Type:Ansible server, For OS: Ubuntu 18.04LTS, Arch: amd64, State: Enabled"
+    import_tasks: ansible-prod.yml
+    when:
+      - ansible_distribution_version == '18.04'
+      - ansible_architecture == 'x86_64'
+
+  - name: "Type:webserver for resource, For OS: Ubuntu 18.04LTS, Arch: amd64, State: Enabled"
+    import_tasks: apache2-resource-server.yml
+    when:
+      - ansible_distribution_version == '18.04'
+      - ansible_architecture == 'x86_64'
