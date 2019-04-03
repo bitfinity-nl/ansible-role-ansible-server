@@ -16,8 +16,6 @@
   ans_user_name     : 'ansible'
   ans_user_pass     : 'Password123!'
   
-
-
   # -- Apache2: security.conf.j2 --
   #
   # See for full details look at: templates/apache2/security.conf
