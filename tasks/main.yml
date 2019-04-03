@@ -15,6 +15,12 @@
     when:
       - ansible_distribution_version == '18.04'
       - ansible_architecture == 'x86_64'
+
+  - name: "Type:create rsa-keypair, For OS: Ubuntu 18.04LTS, Arch: amd64, State: Enabled"
+    import_tasks: rsa-keypair.yml
+    when:
+      - ansible_distribution_version == '18.04'
+      - ansible_architecture == 'x86_64'
   
   - name: "Type:Ansible server, For OS: Ubuntu 18.04LTS, Arch: amd64, State: Enabled"
     import_tasks: ansible-prod.yml

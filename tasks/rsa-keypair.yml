@@ -1,0 +1,46 @@
+---
+  # Title: ansible-role-ansible-server
+  #
+  # Author: Luc Rutten
+  # File: tasks/rsa-keypair.yml
+  #
+  # Description:
+  #   Ansible default deployment server
+
+  - name: "set facts for generic username module"
+    set_fact:
+      ssh_rsa_dir  : "/home/{{ ans_user_name }}/.ssh"
+      ssh_rsa_file : "/home/{{ ans_user_name }}/.ssh/id_rsa"
+
+  - name: "Check if rsa keypair is already generated"
+    stat:
+      path: "{{ ssh_rsa_file }}"
+    register: rsa_keypair
+
+  - name: "Print to screen if client is allready installed"
+    debug:
+      msg: "{{ rsa_keypair.stat.exists }}"
+
+  - name: "Create {{ ssh_rsa_dir }}"
+    file:
+      path: "{{ ssh_rsa_dir }}"  
+      state: directory
+
+  - name: "create ssh keypair"
+    shell: ssh-keygen -t rsa -f '{{ ssh_rsa_file }}' -b 4096 -q -P ""
+    when:
+      - rsa_keypair.stat.exists == false
+
+  - name: "set permissons recurse on {{ ssh_rsa_dir }} "
+    file:
+      path: "{{ ssh_rsa_dir }}"
+      owner: "{{ ans_user_name }}"
+      group: "{{ ans_user_name }}"
+      mode: 0700
+      recurse: yes
+      state: directory
+ 
+  - name: "transfer public key to Ansible server"
+    raw: 'sshpass -p "{{ ans_user_pass }}" ssh-copy-id {{ ans_user_name }}@{{ ansible_hostname }}'
+#    become_method: su
+#    become_user: "{{ ans_user_name }}"
