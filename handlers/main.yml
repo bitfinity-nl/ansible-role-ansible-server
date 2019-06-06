@@ -1,14 +1,14 @@
 ---
-  # Title: ansible-role-ansible-server 
-  #
-  # Author: Luc Rutten
-  # File: handlers/main.yml
-  #
-  # Description:
-  #   Ansible default deployment server 
+# Title: ansible-role-ansible-server 
+#
+# Author: Luc Rutten
+# File: handlers/main.yml
+#
+# Description:
+#   Ansible default deployment server 
 
-  - name: "apache2_restart"
-    systemd:
-      name: apache2
-      state: restarted
+- name: "apache2_restart"
+  systemd:
+    name: apache2
+    state: restarted
 

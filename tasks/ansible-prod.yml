@@ -1,69 +1,69 @@
 ---
-  # Title: ansible-role-ansible-server 
-  #
-  # Author: Luc Rutten
-  # File: tasks/ansible-prod.yml
-  #
-  # Description:
-  #   Ansible default deployment server
+# Title: ansible-role-ansible-server 
+#
+# Author: Luc Rutten
+# File: tasks/ansible-prod.yml
+#
+# Description:
+#   Ansible default deployment server
 
-  - name: "Add additional repositories"
-    apt_repository:
-      repo: "{{ item }}"
-      state: present
-    with_items:
-      - ppa:ansible/ansible
-  
-  - name: "Install (additional) packages"
-    apt:
-      name: "{{ packages }}"
-      state: present
-    vars:
-      packages:
-      - ansible
-  
-  - name: "Create custom Ansible directory"
-    file:
-      path: "{{ item }}"
-      state: directory
-      owner: "{{ ans_user_name }}"
-      group: "{{ ans_user_name }}"
-      mode: 0775
-    with_items:
-      - /opt/ansible-prod
-      - /opt/ansible-prod/group_vars
-      - /opt/ansible-prod/roles
+- name: "Add additional repositories"
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+  with_items:
+    - ppa:ansible/ansible
 
-  - name: "Transfer templates"
-    template:
-      src: "{{ item.src }}"
-      dest: "{{ item.dest }}"
-      owner: ansible
-      group: ansible
-      mode: 0775
-    with_items:
-      - { src: 'ansible/all.yml.j2', dest: '/opt/ansible-prod/group_vars/all.yml' }
-      - { src: 'ansible/windows.yml.j2', dest: '/opt/ansible-prod/group_vars/windows.yml' }
+- name: "Install (additional) packages"
+  apt:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+    - ansible
   
-  - name: "Copy /etc/ansible/* to /opt/ansible-prod"
-    copy:
-      src: "{{ item.src }}"
-      dest: "{{ item.dest }}"
-      owner: "{{ ans_user_name }}"
-      group: "{{ ans_user_name }}"
-      mode: 0775
-      remote_src: yes
-      backup: yes
-    with_items:
-      - { src: '/etc/ansible/hosts', dest: '/opt/ansible-prod/hosts' }
-      - { src: '/etc/ansible/ansible.cfg', dest: '/opt/ansible-prod/ansible.cfg' }
+- name: "Create custom Ansible directory"
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ ans_user_name }}"
+    group: "{{ ans_user_name }}"
+    mode: 0775
+  with_items:
+    - /opt/ansible-prod
+    - /opt/ansible-prod/group_vars
+    - /opt/ansible-prod/roles
 
-  - name: "Configure /opt/ansible-prod/ansible.cfg"
-    replace:
-      path: /opt/ansible-prod/ansible.cfg
-      regexp: "{{ item.find }}"
-      replace: "{{ item.replace }}"
-      backup: yes
-    with_items:
-      - { find: '#inventory', replace: 'inventory' }
-      - { find: '/etc/ansible/hosts', replace: '/opt/ansible-prod/hosts' } 
+- name: "Transfer templates"
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: ansible
+    group: ansible
+    mode: 0775
+  with_items:
+    - { src: 'ansible/all.yml.j2', dest: '/opt/ansible-prod/group_vars/all.yml' }
+    - { src: 'ansible/windows.yml.j2', dest: '/opt/ansible-prod/group_vars/windows.yml' }
+  
+- name: "Copy /etc/ansible/* to /opt/ansible-prod"
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ ans_user_name }}"
+    group: "{{ ans_user_name }}"
+    mode: 0775
+    remote_src: yes
+    backup: yes
+  with_items:
+    - { src: '/etc/ansible/hosts', dest: '/opt/ansible-prod/hosts' }
+    - { src: '/etc/ansible/ansible.cfg', dest: '/opt/ansible-prod/ansible.cfg' }
+
+- name: "Configure /opt/ansible-prod/ansible.cfg"
+  replace:
+    path: /opt/ansible-prod/ansible.cfg
+    regexp: "{{ item.find }}"
+    replace: "{{ item.replace }}"
+    backup: yes
+  with_items:
+    - { find: '#inventory', replace: 'inventory' }
+    - { find: '/etc/ansible/hosts', replace: '/opt/ansible-prod/hosts' } 
