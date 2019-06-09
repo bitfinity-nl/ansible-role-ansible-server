@@ -33,3 +33,9 @@
   when:
     - ansible_distribution_version == '18.04'
     - ansible_architecture == 'x86_64'
+  
+- name: "Type:AWX, For OS: Ubuntu 18.04LTS, Arch: amd64, State: Enabled"
+  import_tasks: awx.yml
+  when:
+    - ansible_distribution_version == '18.04'
+    - ansible_architecture == 'x86_64'

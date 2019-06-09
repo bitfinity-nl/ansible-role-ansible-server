@@ -1,0 +1,53 @@
+---
+# Title: role-ansible-server 
+#
+# Author: Luc Rutten
+# File: tasks/awx.yml
+#
+# Description:
+#   Ansible default deployment server
+
+- name: "Create directory structure"
+  file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: "{{ item.mode }}"
+  with_items:
+    - { path: '{{ ap_awx_git_dest }}', owner: 'root', group: 'root', mode: '0755' }
+
+- name: "Add (additional) repositories"
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+  with_items:
+    - deb http://archive.ubuntu.com/ubuntu bionic main universe
+    - deb http://archive.ubuntu.com/ubuntu bionic-security main universe
+    - deb http://archive.ubuntu.com/ubuntu bionic-updates main universe
+    - ppa:ansible/ansible
+
+- name: "Install (additional) packages"
+  apt:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+    - ansible
+    - docker.io
+    - python-pip
+    - docker
+    - nodejs
+    - npm
+
+- name: "Update NPM globally"
+  npm:
+    name: npm
+    global: yes
+    state: latest
+
+- name: "Clone AWX git repository to {{ ap_awx_git_dest }}"
+  git:
+    repo: "{{ ap_awx_git_url }}"
+    dest: "{{ ap_awx_git_dest }}"
+  notify: run_awx_installer

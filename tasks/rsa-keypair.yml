@@ -1,5 +1,5 @@
 ---
-# Title: ansible-role-ansible-server
+# Title: role-ansible-server
 #
 # Author: Luc Rutten
 # File: tasks/rsa-keypair.yml

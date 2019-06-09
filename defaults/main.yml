@@ -49,3 +49,15 @@ ap_win_connection                   : 'winrm'
 ap_win_winrm_server_cert_validation : 'ignore'
 ap_win_winrm_scheme                 : 'http'
 ap_win_winrm_transport              : 'ntlm'
+
+
+# -- AWX settings --
+#
+# Variable(s):
+#   ap_awx_state    : 'enabled'                                     # Whether AWX wil be installed or not.
+#   ap_awx_git_url  : 'https://github.com/ansible/awx.git'          # Path to git repository.
+#   ap_awx_git_dest : '/opt/awx-git'                                # Path where git clones there files.
+#
+ap_awx_state                        : 'enabled'
+ap_awx_git_url                      : 'https://github.com/ansible/awx.git'
+ap_awx_git_dest                     : '/opt/awx-git' 

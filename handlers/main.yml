@@ -12,3 +12,7 @@
     name: apache2
     state: restarted
 
+- name: "run_awx_installer"
+  shell: "ansible-playbook -i inventory install.yml"
+  args:
+    chdir: "{{ ap_awx_git_dest }}/installer/"
